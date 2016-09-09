@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
-import Firebase from 'firebase'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import { Link, browserHistory } from 'react-router';
+import FlatButton from 'material-ui/FlatButton';
 
-const ref = new Firebase('https://coinigy-featurerequests.firebaseio.com'); 
 
 
 export default class App extends Component {
+
+  addNewClickHandler() {
+    // <Link to="/features/new">
+    //</Link>  
+    browserHistory.push('/features/new');
+  }
+
+
   render() {
     return (
-      <div>
-      	<div className="logo">
-      		<img className="logoImg" src="https://www.coinigy.com/assets/home/images/logowhite.svg" />
-      	</div>
-      	{this.props.children}
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <AppBar
+    title="Feature Requests"
+    //iconClassNameRight="muidocs-icon-navigation-expand-more"
+    iconElementRight={
+            <FlatButton label="ADD NEW" onClick={this.addNewClickHandler} />
+          }
+  />
+        	{this.props.children}
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

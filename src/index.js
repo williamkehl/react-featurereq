@@ -6,9 +6,6 @@ import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import reducers from './reducers';
 import promise from 'redux-promise';
-import Rebase from 're-base';
-
-export const base = Rebase.createClass({databaseURL: 'https://coinigy-featurerequests.firebaseio.com'});
 
 const createStoreWithMiddleware = applyMiddleware(
 	promise

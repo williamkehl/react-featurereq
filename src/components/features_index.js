@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchFeatures } from '../actions/index';
-import { Link } from 'react-router';
-import { base } from '../index';
+import { Link, browserHistory } from 'react-router';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 class FeaturesIndex extends Component {
 	componentWillMount() {
@@ -10,23 +12,22 @@ class FeaturesIndex extends Component {
 	}
 
 	componentDidMount() {
-		console.log('doit');
-		base.syncState('main', {
-			context: this,
-			state: 'all'
-		});
+		
+	}
+
+	navigateToFeature(featureID) {
+		console.log(featureID);
+		browserHistory.push(`/features/${featureID}`);
+		
 	}
 
 	renderFeatures() {
 		return this.props.features.map((feature) => {
 			return (
-				<li className="list-group-item" key={feature.id}>
-					<Link to={"features/" + feature.id}>
-						<span className="pull-xs-right">{feature.points}</span>
-						<strong>{feature.title}</strong>
-					</Link>
-				</li>
-
+				<div key={feature.id}>
+					<ListItem primaryText={feature.title} onClick={() => this.navigateToFeature(feature.id)} />
+					<Divider />
+				</div>
 			);
 		});
 	}
@@ -35,14 +36,11 @@ class FeaturesIndex extends Component {
 		return (
 			<div>
 				<div className="text-xs-right">
-					<Link to="/features/new" className="btn btn-primary">
-						Add a Feature Request
-					</Link>
+					
 				</div>
-				<h3>Feature Requests</h3>
-				<ul className="list-group">
+				<List>
 					{this.renderFeatures()}
-				</ul>
+				</List>
 				
 			</div>
 		);
