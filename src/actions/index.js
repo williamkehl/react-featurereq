@@ -2,58 +2,73 @@ export const FETCH_FEATURES = 'FETCH_FEATURES';
 export const CREATE_FEATURE = 'CREATE_FEATURE';
 export const FETCH_FEATURE = 'FETCH_FEATURE';
 
+const Rebase = require('re-base');
+export const base = Rebase.createClass({
+      apiKey: "AIzaSyBJGSMYcOP_KEftd_u2T1dCRBAnUpmvTKg",
+      databaseURL: "https://coinigy-featurerequests.firebaseio.com"
+});
+
+
+
 export function fetchFeatures() {
+	
+	const request = base.fetch('features', {
+	    context: {},
+	    asArray: true
+	}).then(function (data) {
+		return data;
+	});
+	    
 	return {
-		type: FETCH_FEATURES,
-		payload: [
-			{
-				id: 1,
-				title: 'test1',
-				desc: 'description of test1',
-				username: 'billyjean',
-				points: 4
-			},
-			{
-				id: 2,
-				title: 'test2',
-				desc: 'description of test2',
-				username: 'johndoe',
-				points: 25
-			},
-			{
-				id: 3,
-				title: 'test3',
-				desc: 'description of test3',
-				username: 'jeffrey',
-				points: 71
+	       	type: FETCH_FEATURES,
+	       	payload: request
+	}
+	
+}
+
+
+export function createFeature(props) {
+	console.log(props);
+
+	let idCount = 0;
+
+	const request = base.fetch('features', {
+	    context: {},
+	    asArray: true
+	}).then(function (data) {
+		data.map((feature) => {
+			if (feature.key > idCount) {
+				idCount = parseFloat(feature.key);
 			}
-		]  
+		});
+
+		base.post('features/' + parseFloat(idCount + 1), {
+			data: props
+		}).then(function () {
+			
+		});
+		
+	});
+
+	return {
+		type: CREATE_FEATURE,
+		payload: request
 	}
 }
 
-export function createFeature(props) {
-	return {
-		type: CREATE_FEATURE,
-		payload: {
-				id: 1,
-				title: 'test1',
-				desc: 'description of test1',
-				username: 'billyjean',
-				points: 4
-			}
-	}
-}
+
 
 export function fetchFeature(id) {
 
+	const request = base.fetch(`features/${id}`, {
+	    context: {},
+	    asArray: false
+	}).then(function (data) {
+		return data;
+	});
+	    
 	return {
-		type: FETCH_FEATURE,
-		payload: {
-				id: 1,
-				title: 'test1',
-				desc: 'description of test1',
-				username: 'billyjean',
-				points: 4
-			}
+	       	type: FETCH_FEATURE,
+	       	payload: request
 	}
 }

@@ -5,14 +5,24 @@ import { Link, browserHistory } from 'react-router';
 import base from '../index';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
- 
+import {Card, CardHeader, CardText, CardMedia, CardTitle} from 'material-ui/Card';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import Avatar from 'material-ui/Avatar';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import ActionAssessment from 'material-ui/svg-icons/action/assessment';
+import ActionBuild from 'material-ui/svg-icons/action/build';
+import ActionBugReport from 'material-ui/svg-icons/action/bug-report';
+import ActionAnnouncement from 'material-ui/svg-icons/action/announcement';
 
 class FeaturesNew extends Component {
+
 	static contextTypes = {
 		router: PropTypes.object
 	}
 
 	onSubmit(props) {
+		
 		this.props.createFeature(props)
 		.then(() => { 
 			// blog post has been created, navigate the user to the index
@@ -26,53 +36,118 @@ class FeaturesNew extends Component {
 		browserHistory.push('/');
 	}
 
+
 	render() {
 
-		const { fields: { username, title, desc }, handleSubmit } = this.props;
+		const { fields: { username, title, desc, icon }, handleSubmit } = this.props;
 
-		console.log(username);
+		const styles = {
+		  block: {
+		    maxWidth: 250,
+		  },
+		  radioButton: {
+		    marginBottom: 16,
+		  },
+		};
 
 		return (
-			<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-				<h3>Create a new feature request</h3>
+			<Card>
+				<CardHeader
+					title="Submit a new feature request"
+					subtitle="Please be as descriptive as possible."
+      				avatar={<Avatar icon={
+							<FontIcon className="material-icons">spa</FontIcon>}  />}
+      			/>
+				<CardText>
+					<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+						<p><strong>Type:</strong></p>
+						<div>
+						    <RadioButtonGroup
+						    	name="icon"
+						    	{...icon}
+						    >
+						      <RadioButton
+						        value="assessment"
+						        label="New Feature"
+						        checkedIcon={<ActionAssessment />}
+						        uncheckedIcon={<ActionAssessment />}
+						        style={styles.radioButton}
+						        name="icon"
+						      />
+						      <RadioButton
+						        value="build"
+						        label="Enhancement"
+						        checkedIcon={<ActionBuild />}
+						        uncheckedIcon={<ActionBuild />}
+						        style={styles.radioButton}
+						        name="icon"
+						      />
+						      <RadioButton
+						        value="bug_report"
+						        label="Bug Report"
+						        checkedIcon={<ActionBugReport />}
+						        uncheckedIcon={<ActionBugReport />}
+						        style={styles.radioButton}
+						        name="icon"
+						      />
+						      <RadioButton
+						        value="announcement"
+						        label="Discussion"
+						        checkedIcon={<ActionAnnouncement />}
+						        uncheckedIcon={<ActionAnnouncement />}
+						        style={styles.radioButton}
+						        name="icon"
+						      />
+						    </RadioButtonGroup>
+						    <div className="errorText">
+						    	{icon.touched ? icon.error : ''}
+						    </div>
+						</div>
 
-				<div className={`form-group ${username.touched && username.invalid ? 'has-danger' : ''}`}>
-					<TextField
-						hintText="Username"
-						{...username} 
-						errorText={username.touched ? username.error : ''}
-					/>
-				</div>
+
+						<p><strong>Details:</strong></p>
+						<div className={`form-group ${username.touched && username.invalid ? 'has-danger' : ''}`}>
+							<TextField
+								hintText="Username"
+								{...username} 
+								errorText={username.touched ? username.error : ''}
+								style={{width: "100%"}}
+							/>
+						</div>
 
 
 
-				<div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
-					<TextField
-						hintText = "Title"
-						{...title} 
-						errorText={title.touched ? title.error : ''}
-						/>
-				</div>
+						<div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
+							<TextField
+								hintText = "Title"
+								{...title} 
+								errorText={title.touched ? title.error : ''}
+								style={{width: "100%"}}
+								/>
+						</div>
 
 
-				<div className={`form-group ${desc.touched && desc.invalid ? 'has-danger' : ''}`}>
-					<TextField
-						hintText="Please describe this feature"
-						multiLine={true}
-						rows={6}
-						{...desc} 
-						errorText={desc.touched ? desc.error : ''}
-						/>
-					
-				</div>
+						<div className={`form-group ${desc.touched && desc.invalid ? 'has-danger' : ''}`}>
+							<TextField
+								hintText="Description"
+								multiLine={true}
+								rows={6}
+								{...desc} 
+								errorText={desc.touched ? desc.error : ''}
+								style={{width: "100%"}}
+								/>
+							
+						</div>
 
-				<RaisedButton label="Submit"
-					primary={true} type="submit" />
+						<RaisedButton label="Submit"
+							primary={true} type="submit" />
 
-				<RaisedButton label="Cancel"
-					default={true} onClick={this.cancelBtnHandler} />
-				
-			</form>
+						<RaisedButton label="Cancel"
+							default={true} onClick={this.cancelBtnHandler} />
+						
+					</form>
+				</CardText>
+			</Card>
 		);
 	}
 }
@@ -89,6 +164,9 @@ function validate(values) {
 	if (!values.desc) {
 		errors.desc = 'Description is required';
 	}
+	if (!values.icon) {
+		errors.icon = 'Type is required';
+	}
 	return errors;
 }
 
@@ -99,6 +177,6 @@ function validate(values) {
 
 export default reduxForm({
 	form: 'FeaturesNewForm',
-	fields: ['username', 'title', 'desc'],
+	fields: ['username', 'title', 'desc', 'icon'],
 	validate
 }, null, { createFeature })(FeaturesNew);

@@ -6,3 +6,16 @@
 .logoImg {
 	width:200px;
 }
+.inlineClass {
+	border:1px solid red;
+	width:100px;
+	display:inline-block;
+}
+.smallText {
+	color:#AAA;
+}
+.errorText {
+	font-size: 12px;
+    line-height: 12px;
+    color: #f44336;
+}
