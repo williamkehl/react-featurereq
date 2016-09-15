@@ -1,4 +1,4 @@
-import { FETCH_FEATURES, FETCH_FEATURE, CREATE_FEATURE } from '../actions/index';
+import { FETCH_FEATURES, FETCH_FEATURE, CREATE_FEATURE, CREATE_COMMENT } from '../actions/index';
 
 
 
@@ -13,6 +13,8 @@ export default function(state = INITIAL_STATE, action) {
 		case FETCH_FEATURES:
 			return { ...state, all: action.payload }
 		case CREATE_FEATURE:
+			return state;
+		case CREATE_COMMENT:
 			return state;
 		default:
 			return state;

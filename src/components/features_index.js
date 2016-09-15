@@ -8,16 +8,11 @@ import FontIcon from 'material-ui/FontIcon';
 import Badge from 'material-ui/Badge';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import {blue500, yellow600} from 'material-ui/styles/colors';
+import {blue500, orange600, deepPurple400, green500} from 'material-ui/styles/colors';
 import { truncate } from '../helpers/index';
 import { base } from '../actions/index';
 
 class FeaturesIndex extends Component {
-
-	construct() {
-
-	}
-
 
 	componentWillMount() {
 		this.props.fetchFeatures();
@@ -28,7 +23,7 @@ class FeaturesIndex extends Component {
 
 	componentDidMount() {
 
-		base.listenTo('features', {
+		this.ref = base.listenTo('features', {
 			    context: this,
 			    asArray: true,
 			    then(data){
@@ -37,6 +32,10 @@ class FeaturesIndex extends Component {
 	  		});
 		
 		
+	}
+
+	componentWillUnmount(){
+ 		base.removeBinding(this.ref);
 	}
 
 	navigateToFeature(featureID) {
@@ -52,6 +51,8 @@ class FeaturesIndex extends Component {
 			
 			const truncDesc = truncate(feature.desc);
 
+			let bgColor = orange600;
+
 			let numComments = 0;
 			let badgeColor = [true, false];
 
@@ -60,7 +61,21 @@ class FeaturesIndex extends Component {
 					numComments = numComments + 1;
 					badgeColor = [false, true];
 				});
+
 			}
+
+			switch (feature.icon) {
+				case "bug_report":
+					bgColor = blue500;
+					break;
+				case "build":
+					bgColor = deepPurple400;
+					break;
+				case "announcement":
+					bgColor = green500;
+					break;
+			}
+
 
 			return (
 				<div key={index}>
@@ -71,7 +86,7 @@ class FeaturesIndex extends Component {
 						leftAvatar={<Avatar icon={
 							<FontIcon className="material-icons"
 							
-							>{feature.icon}</FontIcon>} backgroundColor={yellow600} />}
+							>{feature.icon}</FontIcon>} backgroundColor={bgColor} />}
 						
 						rightIcon={<Badge
 								      badgeContent={numComments}

@@ -11,14 +11,19 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import {cyan100, cyan300} from 'material-ui/styles/colors';
+import {cyan100, cyan300, blue500, orange600, deepPurple400, green500} from 'material-ui/styles/colors';
 import { truncate } from '../helpers/index';
 import { base } from '../actions/index';
+import CommentNew from './comment_new';
 
 class FeaturesShow extends Component {
 
-	construct() {
-		
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			showHide: 'none'
+		}
 	}
 
 	static contextTypes = {
@@ -30,7 +35,7 @@ class FeaturesShow extends Component {
 	}
 
 	componentDidMount() {
-		base.listenTo('features/'+this.props.params.id, {
+		this.ref = base.listenTo('features/'+this.props.params.id, {
 		    context: this,
 		    asArray: true,
 		    then(data){
@@ -39,9 +44,10 @@ class FeaturesShow extends Component {
   		});
 	}
 
-	newCommentClickHandler(event) {
-		console.log('yay');
+	componentWillUnmount(){
+ 		base.removeBinding(this.ref);
 	}
+
 	onListHover(e) {
 		e.preventDefault();
 	}
@@ -81,8 +87,21 @@ class FeaturesShow extends Component {
 				});
 		}
 
+		let bgColor = orange600;
 
+		switch (feature.icon) {
+				case "bug_report":
+					bgColor = blue500;
+					break;
+				case "build":
+					bgColor = deepPurple400;
+					break;
+				case "announcement":
+					bgColor = green500;
+					break;
+		}
 
+		console.log(this.props);
 		return (
 			<div>
 				<Card>
@@ -90,7 +109,8 @@ class FeaturesShow extends Component {
 						title={<strong>{feature.title}</strong>} 
 						subtitle={`Submitted by ${feature.username} on ${feature.date}`}
 						avatar={<Avatar icon={
-							<FontIcon className="material-icons">{feature.icon}</FontIcon>}  />}
+							<FontIcon className="material-icons">
+							{feature.icon}</FontIcon>} backgroundColor={bgColor}  />}
 					/>
 					<CardText>
 						<strong>Description:</strong>
@@ -106,7 +126,7 @@ class FeaturesShow extends Component {
 					<CardActions>
       					<FlatButton 
       						label="Add new Comment" 
-      						onClick={this.newCommentClickHandler} 
+      						onClick={() => this.setState({showHide: 'block'})} 
       						backgroundColor={cyan100}
       						hoverColor={cyan300}
       					/>
@@ -117,6 +137,9 @@ class FeaturesShow extends Component {
 								      badgeStyle={{top: 0, right: 30}}
 									></Badge>
     				</CardActions>
+    				<CardText style={{display: this.state.showHide}}>
+    					<CommentNew featureID={this.props.params.id} />
+    				</CardText>
 				</Card>
 			</div>
 		);

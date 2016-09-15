@@ -1,11 +1,11 @@
 {
-  "name": "featurerequestr",
+  "name": "react-featurereq",
   "version": "1.0.0",
   "description": "Simple feature request management using react, redux and firebase",
   "main": "index.js",
-  "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
+  "repository": "git@github.com:williamkehl/react-featurereq.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 3000",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
@@ -27,12 +27,8 @@
   },
   "dependencies": {
     "babel-preset-stage-1": "^6.1.18",
-    "bluebird": "^3.4.5",
-    "firebase": "2.3.1",
-    "immutable": "^3.8.1",
     "lodash": "^3.10.1",
     "material-ui": "^0.15.4",
-    "node-coinigy": "^1.0.0",
     "re-base": "git+https://github.com/qwales1/re-base.git#promises",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
@@ -40,10 +36,8 @@
     "react-redux": "^4.0.0",
     "react-router": "^2.0.1",
     "react-tap-event-plugin": "^1.0.0",
-    "reactfire": "^1.0.0",
     "redux": "^3.0.4",
     "redux-form": "^4.1.3",
-    "redux-promise": "^0.5.3",
-    "redux-react-firebase": "^1.12.1"
+    "redux-promise": "^0.5.3"
   }
 }
