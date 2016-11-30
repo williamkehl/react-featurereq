@@ -7,8 +7,10 @@ import { Link, browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-
-
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 export default class App extends Component {
 
@@ -29,17 +31,27 @@ export default class App extends Component {
       <MuiThemeProvider>
         <div>
           <AppBar
-    title="Feature Requests"
-    onTitleTouchTap={this.handleTouchTap}
-    iconElementLeft={
-      <IconButton tooltip="Home" onClick={this.homeClickHandler}>
-      <FontIcon className="material-icons">home</FontIcon>
-    </IconButton>
-    }
-    iconElementRight={
-            <FlatButton label="ADD NEW" onClick={this.addNewClickHandler} />
-          }
-  />
+            title="Feature Requests"
+            onTitleTouchTap={this.handleTouchTap}
+            iconElementLeft={
+              <IconButton tooltip="Home" onClick={this.homeClickHandler}>
+              <FontIcon className="material-icons">home</FontIcon>
+            </IconButton>
+            }
+            iconElementRight={
+              <IconMenu
+                iconButtonElement={
+                  <IconButton><MoreVertIcon /></IconButton>
+                }
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+              >
+                <MenuItem primaryText="Refresh" />
+                <MenuItem primaryText="Help" />
+                <MenuItem primaryText="Sign out" />
+              </IconMenu>
+            }
+          />
         	{this.props.children}
         </div>
       </MuiThemeProvider>

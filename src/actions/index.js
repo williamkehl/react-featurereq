@@ -30,7 +30,7 @@ export function fetchFeatures() {
 
 export function createFeature(props) {
 	let idCount = 0;
-
+	props.date = Date.now();
 	const request = base.fetch('features', {
 	    context: {},
 	    asArray: true
@@ -59,6 +59,8 @@ export function createFeature(props) {
 export function createComment(props, featureID) {
 
 	let idCount = 0;
+
+	props.date = Date.now();
 
 	const request = base.fetch('features/' + featureID + '/comments', {
 	    context: {},

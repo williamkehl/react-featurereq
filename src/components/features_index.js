@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { fetchFeatures } from '../actions/index';
 import { Link, browserHistory } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -11,6 +12,7 @@ import Avatar from 'material-ui/Avatar';
 import {blue500, orange600, deepPurple400, green500} from 'material-ui/styles/colors';
 import { truncate } from '../helpers/index';
 import { base } from '../actions/index';
+import moment from 'moment';
 
 class FeaturesIndex extends Component {
 
@@ -45,9 +47,12 @@ class FeaturesIndex extends Component {
 	}
 
 	renderFeatures() {
-		if (this.props.features) {
-			
-		return this.props.features.map((feature, index) => {
+		if (this.props.features.length > 0) {
+		
+		const features = _.sortBy(this.props.features, "date").reverse();
+		
+
+		return features.map((feature, index) => {
 			
 			const truncDesc = truncate(feature.desc);
 
@@ -80,7 +85,7 @@ class FeaturesIndex extends Component {
 			return (
 				<div key={index}>
 					<ListItem 
-						primaryText={<div><strong>{feature.title}</strong> <small><small className="smallText">by {feature.username} on {feature.date}</small></small></div>} 
+						primaryText={<div><strong>{feature.title}</strong> <small><small className="smallText">by {feature.username} on {moment(feature.date).format('M/D/YYYY') + ' at ' + moment(feature.date).format('h:m a')}</small></small></div>} 
 						secondaryText={truncDesc}
 						onClick={() => this.navigateToFeature(feature.key)} 
 						leftAvatar={<Avatar icon={
@@ -101,6 +106,14 @@ class FeaturesIndex extends Component {
 				</div>
 			);
 		});
+		} else {
+			return (
+				<div>
+					<ListItem primaryText="There are currently no feature requests. Click here to add a new request." 
+					onClick={() => browserHistory.push('/features/new')}
+					/>
+				</div>
+			)
 		}
 	}
 

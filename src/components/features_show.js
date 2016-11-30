@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchFeature } from '../actions/index';
 import { Link, browserHistory } from 'react-router';
+import _ from 'lodash'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
 import {List, ListItem} from 'material-ui/List';
@@ -15,6 +16,9 @@ import {cyan100, cyan300, blue500, orange600, deepPurple400, green500} from 'mat
 import { truncate } from '../helpers/index';
 import { base } from '../actions/index';
 import CommentNew from './comment_new';
+import moment from 'moment';
+
+
 
 class FeaturesShow extends Component {
 
@@ -44,6 +48,10 @@ class FeaturesShow extends Component {
   		});
 	}
 
+	hideCommentForm() {
+		this.setState({showHide: 'none'});
+	}
+
 	componentWillUnmount(){
  		base.removeBinding(this.ref);
 	}
@@ -56,12 +64,13 @@ class FeaturesShow extends Component {
 	renderComments(feature) {
 		
 		if (feature.comments) {
+
 			return feature.comments.map((comment, index) => { 
 				return (
 				
 					<ListItem
 						key={index}
-						primaryText={<div><strong>{comment.username}</strong><span> on {comment.date}</span></div>} 
+						primaryText={<div><strong>{comment.username}</strong><small> on {moment(comment.date).format('M/D/YYYY') + ' at ' + moment(comment.date).format('h:m a')}</small></div>} 
 						secondaryText={comment.comment}
 					/>
 				)
@@ -101,13 +110,13 @@ class FeaturesShow extends Component {
 					break;
 		}
 
-		console.log(this.props);
+		
 		return (
 			<div>
 				<Card>
 					<CardHeader
 						title={<strong>{feature.title}</strong>} 
-						subtitle={`Submitted by ${feature.username} on ${feature.date}`}
+						subtitle={`Submitted by ${feature.username} on ${moment(feature.date).format('M/D/YYYY') + ' at ' + moment(feature.date).format('h:m a')}`}
 						avatar={<Avatar icon={
 							<FontIcon className="material-icons">
 							{feature.icon}</FontIcon>} backgroundColor={bgColor}  />}
@@ -138,7 +147,7 @@ class FeaturesShow extends Component {
 									></Badge>
     				</CardActions>
     				<CardText style={{display: this.state.showHide}}>
-    					<CommentNew featureID={this.props.params.id} />
+    					<CommentNew showHide={this.hideCommentForm.bind(this)} featureID={this.props.params.id} />
     				</CardText>
 				</Card>
 			</div>

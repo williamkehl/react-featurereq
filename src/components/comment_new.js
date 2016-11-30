@@ -17,6 +17,12 @@ import ActionAnnouncement from 'material-ui/svg-icons/action/announcement';
 
 class CommentNew extends Component {
 
+	constructor(props) {
+		super(props);
+
+		this.cancelBtnHandler = this.cancelBtnHandler.bind(this);
+	}
+
 	static contextTypes = {
 		router: PropTypes.object
 	}
@@ -27,17 +33,17 @@ class CommentNew extends Component {
 			// blog post has been created, navigate the user to the index
 			// we navigate by calling this.context.router.push with the
 			// new path to navigate to.
-			this.context.router.push('/');
+			this.context.router.push('/features/'+this.props.featureID);
 		 });
 	}
 
 	cancelBtnHandler() {
-		browserHistory.push('/');
+		this.props.showHide();
 	}
 
 
 	render() {
-		console.log(this.props.featureID);
+		
 		const { fields: { username, comment }, handleSubmit } = this.props;
 		const styles = {
 		  block: {
